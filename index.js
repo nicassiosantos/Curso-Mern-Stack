@@ -1,3 +1,4 @@
+
 const express = require('express');
 const app = express(); 
 const connectDatbase = require("./src/database/db");
@@ -24,4 +25,5 @@ app.listen(port, () => console.log('Servidor rodando na porta %d', port));
   // Name - Um identificador da rota  
 
   // Function(Callback) - Responsavel por executar algum comando 
+
 

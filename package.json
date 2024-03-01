@@ -2,7 +2,7 @@
   "name": "curso-mernstack",
   "version": "1.0.0",
   "description": "Curso para breaking news",
-  "main": "index.js", 
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "node index",
@@ -12,6 +12,7 @@
   "author": "Nicassio",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.18.2",
     "mongoose": "^8.1.1",
     "nodemon": "^3.0.2"

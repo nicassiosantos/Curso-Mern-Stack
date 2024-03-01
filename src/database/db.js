@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const connectDatbase = () => {
     console.log("Wait connecting to the database");
@@ -8,4 +8,4 @@ const connectDatbase = () => {
     ).then(() => console.log("MongoDB Atlas connected")).catch((error) => console.log(error));
 };
 
-module.exports = connectDatbase;
+export default connectDatbase;

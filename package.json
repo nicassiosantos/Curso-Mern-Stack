@@ -2,7 +2,8 @@
   "name": "curso-mernstack",
   "version": "1.0.0",
   "description": "Curso para breaking news",
-  "main": "index.js",
+  "main": "index.js", 
+  "type": "module",
   "scripts": {
     "start": "node index",
     "dev": "nodemon index"

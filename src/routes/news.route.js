@@ -1,5 +1,5 @@
 import {Router} from "express";  
-import {creat, findAll} from "../controllers/news.controller.js";
+import { create, findAll} from "../controllers/news.controller.js";
 const router = Router(); 
 
 router.post("/", create); 

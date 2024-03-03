@@ -1,5 +1,5 @@
 import mongoose from "mongoose"; 
-import { required } from "nodemon/lib/config";
+
 
 const NewsSchema = new mongoose.Schema({
     title:{

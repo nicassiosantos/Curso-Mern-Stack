@@ -1,4 +1,4 @@
-import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService } from "../services/news.service.js"
+import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService } from "../services/news.service.js"
 import { ObjectId } from "mongoose";
 
 const create = async (req, res) => {
@@ -185,5 +185,29 @@ const byUser = async (req, res) => {
     }
 }
 
+const update = async (req, res) => {
+    try {
+        const {title, text, banner} = req.body; 
+        const { id } = req.params; 
 
-export { create, findAll, topNews, findById, searchByTitle, byUser }
+        if (!title && !banner && !text) {
+            return res.status(400).send({ message: "Submit at least one field for update the post" });
+        } 
+
+        const news = await findByIdService(id); 
+
+        if(String(news.user._id) !== req.userId){ 
+            return res.status(400).send({message: "You didn't update this post"});
+        }
+
+        await updateService(id, title, text, banner);
+
+        return res.send({ message: "Post sucessfully updated!"});
+
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+
+
+export { create, findAll, topNews, findById, searchByTitle, byUser, update }

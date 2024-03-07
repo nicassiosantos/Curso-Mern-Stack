@@ -1,5 +1,5 @@
 import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, 
-    updateService, eraseService, likeNewsService, DeleteLikeNewsService } from "../services/news.service.js"
+    updateService, eraseService, likeNewsService, DeleteLikeNewsService, addCommentService, deleteCommentService } from "../services/news.service.js"
 import { ObjectId } from "mongoose";
 
 const create = async (req, res) => {
@@ -248,6 +248,53 @@ const likeNews = async (req, res) => {
     } catch (err) {
         res.status(500).send({ message: err.message })
     }
+} 
+
+const addComment = async (req, res) => {
+    try{ 
+        const {id} = req.params; 
+        const userId = req.userId;  
+        const {comment} = req.body;
+
+        
+
+        if(!comment){ 
+            return res.status(400).send({ message: "Write a message to comment"})
+        }
+
+        await addCommentService(id, comment, userId); 
+
+        return res.send({message: "Comment sucessfully completed!!"})
+
+
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+} 
+
+const deleteComment = async (req, res) => { 
+    try{ 
+        const {idNews} = req.params; 
+        const {idComment} = req.params; 
+        const userId = req.userId; 
+
+        const commentDeleted = await deleteCommentService(idNews, idComment, userId); 
+
+        const commentFinder = commentDeleted.comments.find( (comment) => comment.idComment === idComment);
+
+        if(!commentFinder){
+            return res.status(400).send({message: "Comment not found"});
+        }
+
+        if(commentFinder.userId !== userId){
+            return res.status(400).send({message: "You can't delete this comment"});
+        }
+
+        return res.send({message: "Comment sucessfully removed!!"});
+
+    }catch (err) {
+        res.status(500).send({ message: err.message })
+    }
 }
 
-export { create, findAll, topNews, findById, searchByTitle, byUser, update, erase, likeNews }
+export { create, findAll, topNews, findById, searchByTitle, byUser, update, erase, likeNews, addComment, deleteComment }

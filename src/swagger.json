@@ -15,8 +15,8 @@
         }
     ],
     "paths": {
-        "/user/": {
-          "news": {
+        "/user/create": {
+          "post": {
             "summary": "Create a new user",
             "description": "Route responsible for creating a new user",
             "tags": ["Users"],
@@ -177,7 +177,7 @@
           }
         },
         "/auth/login": {
-          "news": {
+          "post": {
             "summary": "Login to Breaking News",
             "description": "Route responsible for logging in a registered user",
             "tags": ["Auth"],
@@ -209,7 +209,7 @@
           }
         },
         "/news/create": {
-          "news": {
+          "post": {
             "summary": "Create a new news",
             "description": "Route responsible for creating a new News",
             "tags": ["News"],

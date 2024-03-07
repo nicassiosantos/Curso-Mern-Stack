@@ -192,7 +192,7 @@ const update = async (req, res) => {
         const { id } = req.params;
 
         if (!title && !banner && !text) {
-            return res.status(400).send({ message: "Submit at least one field for update the post" });
+            return res.status(400).send({ message: "Submit at least one field for update the news" });
         }
 
         const news = await findByIdService(id);

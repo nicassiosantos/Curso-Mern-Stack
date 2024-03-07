@@ -1,4 +1,5 @@
-import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService, eraseService } from "../services/news.service.js"
+import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, 
+    updateService, eraseService, likeNewsService, DeleteLikeNewsService } from "../services/news.service.js"
 import { ObjectId } from "mongoose";
 
 const create = async (req, res) => {
@@ -163,7 +164,7 @@ const searchByTitle = async (req, res) => {
 
 const byUser = async (req, res) => {
     try {
-        const id = req.userId; 
+        const id = req.userId;
         const news = await byUserService(id);
 
         return res.send({
@@ -187,47 +188,66 @@ const byUser = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const {title, text, banner} = req.body; 
-        const { id } = req.params; 
+        const { title, text, banner } = req.body;
+        const { id } = req.params;
 
         if (!title && !banner && !text) {
             return res.status(400).send({ message: "Submit at least one field for update the post" });
-        } 
+        }
 
-        const news = await findByIdService(id); 
+        const news = await findByIdService(id);
 
-        if(String(news.user._id) !== req.userId){ 
-            return res.status(400).send({message: "You didn't update this news"});
+        if (String(news.user._id) !== req.userId) {
+            return res.status(400).send({ message: "You didn't update this news" });
         }
 
         await updateService(id, title, text, banner);
 
-        return res.send({ message: "News sucessfully updated!"});
+        return res.send({ message: "News sucessfully updated!" });
 
     } catch (err) {
         res.status(500).send({ message: err.message })
     }
 }
 
-const erase = async (req, res) => { 
-    try{ 
-        const {id} = req.params; 
+const erase = async (req, res) => {
+    try {
+        const { id } = req.params;
 
-        const news = await findByIdService(id); 
+        const news = await findByIdService(id);
 
-        if(String(news.user._id) !== req.userId){ 
-            return res.status(400).send({message: "You didn't delete this news"});
-        } 
+        if (String(news.user._id) !== req.userId) {
+            return res.status(400).send({ message: "You didn't delete this news" });
+        }
 
-        await eraseService(id); 
+        await eraseService(id);
 
-        return res.send({message: "News deleted sucessfully!"})
+        return res.send({ message: "News deleted sucessfully!" })
 
 
-    } catch (err){
+    } catch (err) {
         res.status(500).send({ message: err.message })
     }
 }
 
+const likeNews = async (req, res) => {
+    try {
+        const { id } = req.params; 
+        const userId = req.userId; 
 
-export { create, findAll, topNews, findById, searchByTitle, byUser, update, erase }
+        const newsLiked = await likeNewsService(id, userId); 
+
+        if(!newsLiked){
+            await DeleteLikeNewsService(id, userId);
+            return res.status(200).send({message: "Like sucessfully removed!"})
+        }
+
+        return res.send({message: "Like done sucessfully!"})
+
+
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+
+export { create, findAll, topNews, findById, searchByTitle, byUser, update, erase, likeNews }

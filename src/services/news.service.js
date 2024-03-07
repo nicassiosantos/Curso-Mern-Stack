@@ -16,6 +16,10 @@ const byUserService = (id) => News.find({ user: id }).sort({ _id: -1 }).populate
 
 const updateService = (id, title, text, banner) => News.findOneAndUpdate({ _id: id }, { title, text, banner }, { rawResult: true });
 
-const eraseService = (id) => News.findOneAndDelete({ _id: id});
+const eraseService = (id) => News.findOneAndDelete({ _id: id });
 
-export { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService, eraseService };
+const likeNewsService = (idNews, userId) => News.findOneAndUpdate({ _id: idNews, "likes.userId": { $nin: [userId] } }, { $push: { likes: { userId, created: new Date() } } });
+
+const DeleteLikeNewsService = (idNews, userId) => News.findOneAndUpdate({ _id: idNews }, { $pull: { likes: { userId } } });
+
+export { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService, eraseService, likeNewsService, DeleteLikeNewsService };
